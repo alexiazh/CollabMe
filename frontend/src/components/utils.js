@@ -58,7 +58,7 @@ export function formatTasks(tasks) {
     const task = tasks[i];
     if (taskTitles.indexOf(task.title) > -1) {
       formattedTask = (formattedTasks.find(formattedTask => formattedTask.title === task.title));
-      newSubTasks = formattedTask.subtasks;
+      newSubTasks = formattedTask.subtasks.filter(subtask => subtask.title !== '');
       formattedTasks = formattedTasks.filter(formattedTask => formattedTask.title !== task.title);
     } else {
       const { id, title, description, assigned, completed, created_at } = task;
@@ -72,6 +72,7 @@ export function formatTasks(tasks) {
     formattedTask = {...formattedTask, subtasks: newSubTasks};
     formattedTasks.push(formattedTask);
   }
+  formattedTasks.sort((a, b) => new Date(b.created_at.split('/').reverse()) - new Date(a.created_at.split('/').reverse()));
   return formattedTasks;
 }
 
